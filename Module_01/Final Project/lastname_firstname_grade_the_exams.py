@@ -32,7 +32,7 @@ for filename in filenames:
         sys.exit()
 
     with f:
-        print("*"*100)
+        print("*" * 100)
         print(f"Mở file {filename} thành công!")
         print(f"Xử lý file: {filename}")
         for line in f:
@@ -40,7 +40,7 @@ for filename in filenames:
             # kiểm tra hợp lệ của dòng
             if not (len(elements) == 26 and re.match("^N\d{8}", str(elements[0]))):
                 err_count += 1
-                print(f"{elements[0]} không hợp lệ!")
+                print(f"{line} không hợp lệ!")
             else:
                 for index, value in enumerate(elements):
                     # index = 0 là mã của sinh vien
@@ -89,7 +89,9 @@ for filename in filenames:
 
     # lấy giá trị max
     max_pass_value = sorted(dic_pass.items(), key=lambda x: x[1], reverse=True)[0][1]
-    max_failed_value = sorted(dic_failed.items(), key=lambda x: x[1], reverse=True)[0][1]
+    max_failed_value = sorted(dic_failed.items(), key=lambda x: x[1], reverse=True)[0][
+        1
+    ]
 
     print(f"Giá trị - Số lượng - Tỷ lệ bị bỏ qua là: ")
     for k, v in dict(sorted(dic_pass.items(), key=lambda x: int(x[0]))).items():
@@ -100,7 +102,6 @@ for filename in filenames:
     for k, v in dict(sorted(dic_failed.items(), key=lambda x: int(x[0]))).items():
         if v == max_failed_value:
             print(f"{k} - {v} - {round(v/sum_count, 3)}")
-
 
     # tạo file kết quả
     file_name_result = (filename.split("\\")[-1]).split(".")[0] + "_grades.txt"
