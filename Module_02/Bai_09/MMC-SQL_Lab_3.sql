@@ -403,6 +403,14 @@ where
     )
     AND `DepartmentID` = 3;
 
+SELECT
+    `FullName`,
+    MAX(LENGTH (`FullName`))
+from
+    `account`
+GROUP BY
+    `FullName`;
+
 -- Q6
 SELECT
     *
@@ -475,6 +483,7 @@ WHERE
 
 --Q15
 UPDATE groupaccount
-SET `GroupID` = 4
+SET
+    `GroupID` = 4
 WHERE
     `AccountID` = 5;
