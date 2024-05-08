@@ -1,7 +1,11 @@
 -- Active: 1714535278653@@127.0.0.1@3306@testing_system_db
+DROP DATABASE IF EXISTS Testing_System_Db;
+
 CREATE DATABASE IF NOT EXISTS Testing_System_Db DEFAULT CHARACTER
 SET
     = 'utf8';
+
+USE Testing_System_Db;
 
 CREATE Table
     IF NOT EXISTS Department (
@@ -20,7 +24,7 @@ VALUES
     ('Human Resources'),
     ('Finance'),
     ('Operations'),
-    ('Legal'),
+    ('Sale'),
     ('Customer Service');
 
 CREATE Table
@@ -30,7 +34,7 @@ CREATE Table
     );
 
 INSERT INTO
-    `Position`(PositionName)
+    `Position` (PositionName)
 VALUES
     ('Software Engineer'),
     ('Data Scientist'),
@@ -175,7 +179,7 @@ CREATE Table
         GroupID INT,
         AccountID INT,
         JoinDate DATE,
-        PRIMARY KEY (GroupID,AccountID),
+        PRIMARY KEY (GroupID, AccountID),
         FOREIGN KEY (GroupID) REFERENCES `Group` (GroupID),
         FOREIGN KEY (AccountID) REFERENCES Account (AccountID)
     );
@@ -326,7 +330,7 @@ CREATE Table
     IF NOT EXISTS ExamQuestion (
         ExamID INT,
         QuestionID INT,
-        PRIMARY KEY (ExamID,QuestionID),
+        PRIMARY KEY (ExamID, QuestionID),
         FOREIGN KEY (ExamID) REFERENCES Exam (ExamID),
         FOREIGN KEY (QuestionID) REFERENCES Question (QuestionID)
     );
@@ -344,3 +348,133 @@ VALUES
     (3, 8),
     (3, 9),
     (4, 10);
+
+-- Q2
+SELECT
+    *
+from
+    department;
+
+-- Q3
+select
+    `DepartmentID`
+FROM
+    department
+WHERE
+    `DepartmentName` = 'Sale';
+
+-- Q4
+SELECT
+    *
+FROM
+    `account`
+where
+    LENGTH (`FullName`) = (
+        SELECT
+            LENGTH (`FullName`) as `len`
+        FROM
+            `account`
+        GROUP BY
+            LENGTH (`FullName`)
+        ORDER BY
+            LENGTH (`FullName`) DESC
+        LIMIT
+            1
+    );
+
+-- Q5
+SELECT
+    *
+FROM
+    `account`
+where
+    LENGTH (`FullName`) = (
+        SELECT
+            MAX(`len`)
+        from
+            (
+                SELECT
+                    LENGTH (`FullName`) as `len`
+                FROM
+                    `account`
+                GROUP BY
+                    LENGTH (`FullName`)
+            ) a
+    )
+    AND `DepartmentID` = 3;
+
+-- Q6
+SELECT
+    *
+FROM
+    `group`
+WHERE
+    `CreateDate` < STR_TO_DATE ('20/12/2019', '%d/%m/%Y');
+
+-- Q7
+SELECT
+    *
+FROM
+    answer
+WHERE
+    `QuestionID` >= 4;
+
+--Q8
+SELECT
+    *
+FROM
+    exam
+WHERE
+    `Duration` >= 60
+    AND `CreateDate` < STR_TO_DATE ('20/12/2019', '%d/%m/%Y');
+
+--Q9
+SELECT
+    *
+FROM
+    `group`
+ORDER BY
+    `CreateDate` DESC
+LIMIT
+    5;
+
+--Q10
+SELECT
+    COUNT(*)
+FROM
+    `account`
+WHERE
+    `DepartmentID` = 2;
+
+--Q11
+SELECT
+    *
+FROM
+    `account`
+WHERE
+    LEFT (`Username`, 1) = 'D'
+    AND RIGHT (`Username`, 1) = 'o';
+
+--Q12
+DELETE FROM exam
+WHERE
+    `CreateDate` < STR_TO_DATE ('20/12/2019', '%d/%m/%Y');
+
+--Q13
+DELETE FROM question
+WHERE
+    `Content` LIKE N'câu hỏi';
+
+--Q14  
+UPDATE `account`
+SET
+    `Username` = N'Lô Văn Đề',
+    `Email` = 'lo.vande@mmc.edu.vn'
+WHERE
+    `AccountID` = 5;
+
+--Q15
+UPDATE groupaccount
+SET `GroupID` = 4
+WHERE
+    `AccountID` = 5;
